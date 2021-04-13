@@ -1,0 +1,155 @@
+{% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <title>Cart Page</title>
+</head>
+
+<body>
+    <section>
+        <!--Nav Bar-->
+        <nav class="navbar navbar-expand-sm navbar-dark bg-black">
+            <div class="container">
+                <a href="#" class="navbar-brand">FISHING TACKLE</a>
+                <i class="fas fa-fish fa-2x" style="color: white"></i>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a href="{% url 'Main Page' %}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Brand</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Log Out</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Cart' %}" class="nav-link">
+                                <i class="fa fa-shopping-cart fa-2x" style="color: white"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="cart-total">{{ cartItems }}</p>
+                </div>
+            </div>
+        </nav>
+        <!--End nav-->
+        <!--Cart item-->
+        <div class="small-container cart-page cart-page-expand-sm">
+            <a class="btn btn-outline-dark" href="{% url 'Rod Page' %}">&#x2190; Continue Shopping</a>
+            <br>
+            <br>
+
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <div class="cart-info">
+                            <img src="{{ item.product.imageURL }}" alt="">
+                            <div>{{ item.product.name }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>RM{{ item.product.price| floatformat:2 }}<br></div>
+                    </td>
+                    <td>
+                        <p class="quantity">{{ item.quantity }}</p>
+                        <div class="quantity">
+                            <a href="{% url 'increase_quantity' item.id %}">
+                                <img data-product={{ item.product.id }} data-action="add" class="chg-quantity update-cart" src="{% static 'Images/arrow-up.png' %}">
+                            </a>
+                            <a href="{% url 'decrease_quantity' item.id %}">
+                                <img data-product={{ item.product.id }} data-action="remove" class="chg-quantity update-cart" src="{% static 'Images/arrow-down.png' %}">
+                            </a>
+                        </div>
+                    </td>
+                    <td>RM{{ item.get_total }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="total-price">
+                <table>
+                    <tr>
+                        <td>Items</td>
+                        <td>{{ order.get_cart_items }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td>RM{{ order.get_cart_total| floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="btn btn-color slide-btn btn-lg">
+              Check Out
+            </a></td>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+
+        <!--End cart-->
+    </section>
+    <!--Footer-->
+    <footer class="footer mt-5">
+        <div class="text-center py-5">
+            <h2 class="py-3">Fishing Store</h2>
+            <div class="mx-auto heading-line"></div>
+        </div>
+        <div class="container">
+            <div class="container">
+                <div class="row mb-3">
+                    <div class="col-lg-8 offset-lg-2 text-center">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                        <div class="justify-content-center">
+                            <i class="fab fa-facebook fa-2x"></i>
+                            <i class="fab fa-twitter fa-2x"></i>
+                            <i class="fab fa-instagram fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright text-center py-3 border-top text-light">
+                    <p>&copy; Copy Right Fishing Store</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Optional JavaScript -->
+
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+
+</html>
+{% endblock content %}
