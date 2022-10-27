@@ -1,0 +1,90 @@
+{%load static%} {%block content%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">{% load static%}
+    <link rel="stylesheet" href="{% static 'css/Page.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <title>Vendor Page</title>
+</head>
+
+<body>
+    <!--Nav Bar-->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-black">
+        <div class="container">
+            <a href="#" class="navbar-brand">FISHING TACKLE</a>
+            <i class="fas fa-fish fa-2x" style="color: white"></i>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class='nav-item' style="color: white">Welcome Vendor - {{vendor.name}}</li>
+                    <li class="nav-item" style="color: white">
+                        <a href="{% url 'Vendor Page' %}" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item" style="color: white">
+                        <a href="{% url 'logout' %}" class="nav-link">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="box">
+        <h2 class="is-size-3 mb-4">My Line</h2>
+
+        <a href="{% url 'Add Product' %}" class="btn btn-outline-info">Add product</a>
+        <center>
+            <a href="{% url 'Vendor Rod' %}" class="btn btn-outline-primary">Vendor Rod</a>
+            <a href="{% url 'Vendor Reel' %}" class="btn btn-outline-primary">Vendor Reel</a>
+            <a href="{% url 'Vendor Line' %}" class="btn btn-outline-primary">Vendor Line</a>
+            <a href="{% url 'Vendor Lure' %}" class="btn btn-outline-primary">Vendor Lure</a>
+            <a href="{% url 'Vendor Accessories' %}" class="btn btn-outline-primary">Vendor Accessories</a>
+        </center>
+        {% if products %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Type</th>
+                    <th>Brand</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td><a href="{% url 'Product' product.id %}">{{product.name}}</a></td>
+                    <td>RM{{product.price|floatformat:2}}</td>
+                    <td>{{product.type}}</td>
+                    <td>{{product.brand}}</td>
+                    <td>{{product.imageURL}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>You don't have any products yet...</p>
+        {% endif %}
+    </div>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+{%endblock content%}

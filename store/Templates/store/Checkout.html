@@ -1,0 +1,232 @@
+{% extends 'store/index.html' %}{% load static %}{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <script>
+        function fun() {
+            alert("Payment successful");
+        }
+    </script>
+
+    <title>Checkout Page</title>
+</head>
+
+<body>
+    <section>
+        <!--Nav Bar-->
+        <nav class="navbar navbar-expand-sm navbar-dark bg-black">
+            <div class="container">
+                <a href="#" class="navbar-brand">FISHING TACKLE</a>
+                <i class="fas fa-fish fa-2x" style="color: white"></i>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a href="{% url 'Main Page' %}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Brand</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'logout' %}" class="nav-link">Log Out</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Cart' %}" class="nav-link">
+                                <i class="fa fa-shopping-cart fa-2x" style="color: white"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="cart-total">{{ cartItems }}</p>
+                </div>
+            </div>
+        </nav>
+        <!--End nav-->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="box-element" id="form-wrapper">
+                    <form id="form" method="post" enctype="multipart/form-data">
+                        <h3 class="title is-size3">Checkout</h3>
+                        <h2 class="title is-size3">Bayaran Akaun CIMB - 7624425321 (Kedai FESO)</h2>
+                        {% csrf_token %}
+                        <div id="user-info ">
+                            <div class="form-field ">
+                                <input required class="form-control " type="text " name="name " placeholder="Name.. ">
+                            </div>
+                            <div class="form-field ">
+                                <input required class="form-control " type="email " name="email " placeholder="Email.. ">
+                            </div>
+                            <div class="form-field ">
+                                <input required class="form-control " type="text " name="phone_number " placeholder="Phone Number.. ">
+                            </div>
+
+                            <hr>
+                            <p>Shipping Information:</p>
+                            <hr>
+                            <div class="form-field ">
+                                <input class="form-control " type="text " name="address " placeholder="Address.. ">
+                            </div>
+                            <div class="form-field ">
+                                <input class="form-control " type="text " name="city " placeholder="City.. ">
+                            </div>
+                            <div class="form-field ">
+                                <input class="form-control " type="text " name="zipcode " placeholder="Zip code.. ">
+                            </div>
+                            <div class="form-field ">
+                                <input class="form-control " type="text " name="state " placeholder="State.. ">
+                            </div>
+                        </div>
+                        <br> {{ form.as_p }}
+                        <br>
+                        <div class="field">
+                            <div class="control">
+                                <button class="btn btn-outline-success" onclick="fun()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <br>
+            <div class="col-lg-6 ">
+                <div class="box-element ">
+                    <a class="btn btn-outline-dark " href="{% url 'Cart' %} ">&#x2190; Back to Cart</a>
+                    <hr>
+                    <h3>Order Summary</h3>
+                    <hr> {% for item in items %}
+                    <div class="cart-row ">
+
+                        <div style="flex:2 ">
+                            <p>{{item.product.name}}</p>
+                        </div>
+                        <div style="flex:1 ">
+                            <p>{{item.product.price}}</p>
+                        </div>
+                        <div style="flex:1 ">
+                            <p>{{item.product.quantity}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <h5>Items: {{order.get_cart_items}}</h5>
+                    <h5>Total: RM{{order.get_cart_total| floatformat:2}}</h5>
+
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript ">
+            var shipping = '{{order.shipping}}'
+
+            if (shipping == 'False') {
+                document.getElementById('shipping-info').innerHTML = ''
+            }
+
+            if (user != 'AnonymousUser') {
+                document.getElementById('user-info').innerHTML = ''
+            }
+
+            if (shipping == 'False' && user != 'AnonymousUser') {
+                //Hide entire form if user is logged in and shipping is false
+                document.getElementById('form-wrapper').classList.add("hidden ");
+                //Show payment if logged in user wants to buy an item that does not require shipping
+                document.getElementById('payment-info').classList.remove("hidden ");
+            }
+
+            var form = document.getElementById('form')
+            form.addEventListener('submit', function(e) {
+                e.preventDefault()
+                console.log('Form Submitted...')
+            })
+
+            /*
+	    document.getElementById('make-payment').addEventListener('click', function(e){
+	    	submitFormData()
+	    })
+	    */
+
+            function submitFormData() {
+                console.log('Payment button clicked')
+
+                var userFormData = {
+                    'name': null,
+                    'email': null,
+                    'phone_number': null,
+                    'total': total,
+                }
+
+                var shippingInfo = {
+                    'address': null,
+                    'city': null,
+                    'state': null,
+                    'zipcode': null,
+                }
+
+                if (shipping != 'False') {
+                    shippingInfo.address = form.address.value
+                    shippingInfo.city = form.city.value
+                    shippingInfo.state = form.state.value
+                    shippingInfo.zipcode = form.zipcode.value
+                    shippingInfo.user_image = form.image.value
+                }
+
+                if (user == 'AnonymousUser') {
+                    userFormData.name = form.name.value
+                    userFormData.email = form.email.value
+                }
+
+                console.log('Shipping Info:', shippingInfo)
+                console.log('User Info:', userFormData)
+
+                var url = "/process_order/ "
+                fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'applicaiton/json',
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: JSON.stringify({
+                            'form': userFormData,
+                            'shipping': shippingInfo
+                        }),
+
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log('Success:', data);
+                        alert('Transaction completed');
+
+                        cart = {}
+                        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/ "
+
+                        window.location.href = "{% url 'Rod Page' %} "
+
+                    })
+            }
+        </script>
+
+    </section>
+
+</body>
+
+</html>
+{% endblock content %}
